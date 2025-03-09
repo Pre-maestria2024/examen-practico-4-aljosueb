@@ -3,19 +3,22 @@ def main():
     H = list(map(int, input().split()))
     D = list(map(int, input().split()))
 
-    ganancia_total = 0
-    comida_usada = -1
+    dp = [float('inf')] * (n + 1)
+    dp[0] = 0
 
     for i in range(m):
-        if H[i] == n:
-            comida_usada = i
-            break
+        for j in range(n, -1, -1):
+            salud_nueva = min(j + H[i], n)
+            dp[salud_nueva] = min(dp[salud_nueva], dp[j] + D[i])
 
-    for i in range(m):
-        if i != comida_usada:
-            ganancia_total += D[i]
+    if dp[n] == float('inf'):
+        print(0)
+        return
 
-    print(ganancia_total)
+    ganancia_total = sum(D)
+    ganancia_final = ganancia_total - dp[n]
+
+    print(ganancia_final)
 
 if __name__ == '__main__':
     main()
